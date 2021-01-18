@@ -5,7 +5,7 @@ import 'package:world_time/pages/loading.dart';
 
 void main() {
   runApp(MaterialApp(
-    initialRoute: '/home', // For testing purpose
+    initialRoute: '/', // For testing purpose
     routes: {
       '/' : (context) => Loading(), // context is used to understand where we are the in widget tree
       '/home': (context) => Home(),
