@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:http/http.dart' as http;
-import 'package:http/http.dart';
+import 'package:world_time/model/WorldDateTimeResponse.dart';
+import 'file:///C:/Yash/Flutter/world_time/lib/services/WorldTime.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 
 class Loading extends StatefulWidget {
   @override
@@ -9,22 +10,35 @@ class Loading extends StatefulWidget {
 
 class _LoadingState extends State<Loading> {
 
-  @override
-  void initState() {
-    // TODO: implement initState
-    super.initState();
-    getData();
+
+  void setupWorldTime() async {
+    WorldTime wt = WorldTime(location: 'Berlin', flag: 'germany.png', url: 'Europe/Berlin');
+    await wt.getTime();
+    Navigator.pushReplacementNamed(context, '/home', arguments: {
+      'time' : wt.time,
+      'location' : wt.location,
+      'flag' : wt.flag,
+      'isDayTime' : wt.isDayTime,
+    });
   }
 
-  void getData() async {
-      Response data = await http.get('https://jsonplaceholder.typicode.com/todos/1');
-      print(data.body); // .body returns string.
+  @override
+  void initState() {
+    super.initState();
+    setupWorldTime();
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Text("Loading"),
+      backgroundColor: Colors.blue[900],
+      body: SafeArea(
+        child: Center(
+          child: SpinKitCubeGrid(
+            color: Colors.white,
+          ),
+        ),
+      ),
     );
   }
 }
